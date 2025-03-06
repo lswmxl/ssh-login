@@ -26,12 +26,15 @@ if [ -z "$SSH_CLIENT_IP" ]; then
     exit 0
 fi
 
-# 获取远程 IP 位置
-LOCATION=$(curl -s "http://ip-api.com/json/$SSH_CLIENT_IP?lang=zh-CN" | \
-    awk -F'"' '/"country"/ {country=$4} /"regionName"/ {region=$4} /"city"/ {city=$4} END {print country, region, city}')
-
-# 生成消息
-MESSAGE="🔔 SSH 登录通知\n👤 用户: $USER\n🖥 服务器: $HOSTNAME\n🌐 服务器公网 IP: $IP_ADDRESS\n📡 登录 IP: $SSH_CLIENT_IP\n📍 位置: $LOCATION"
+# 获取远程 IP 地址的地理位置（使用 ip-api.com）
+LOCATION=$(curl -s "https://ipinfo.io/$SSH_CLIENT_IP/json" | \
+    awk -F'"' '
+    /"country"/ {country=$4}
+    /"region"/ {region=$4}
+    /"city"/ {city=$4}
+    END {print country, region, city}')
+# 生成消息内容
+MESSAGE="🔔 SSH 登录通知%0A👤 用户: $USER%0A🖥 服务器: $HOSTNAME%0A🌐 服务器内网IP:$IP_ADDRESS%0A🌐 服务器公网 IP: $SERVER_PUBLIC_IP%0A📡 登录IP: $SSH_CLIENT_IP%0A📍 位置: $LOCATION"
 
 # 发送到 Telegram
 URL="https://api.telegram.org/bot$TOKEN/sendMessage"
