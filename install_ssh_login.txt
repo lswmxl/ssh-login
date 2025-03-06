@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 定义路径
-SCRIPT_URL="https://github.com/111/222/ssh_notify.sh"
-SCRIPT_PATH="/home/ssh_notify.sh"
-CONFIG_PATH="/home/ssh_notify.conf"
+SCRIPT_URL="https://raw.githubusercontent.com/lswmxl/ssh-login/refs/heads/master/ssh_login.sh"
+SCRIPT_PATH="/home/ssh_login.sh"
+CONFIG_PATH="/home/ssh_login.conf"
 
 # 让用户输入 Telegram 机器人 TOKEN 和 Chat ID
 read -p "请输入 Telegram 机器人 TOKEN: " TOKEN
